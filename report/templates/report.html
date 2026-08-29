@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Relatório Diário — Análise B3</title>
+<style>
+  body { font-family: -apple-system, Arial, sans-serif; background: #0f1115; color: #e8e8e8; margin: 0; padding: 24px; }
+  h1 { font-size: 1.4rem; margin-bottom: 4px; }
+  .data { color: #9aa0a6; margin-bottom: 24px; }
+  table { width: 100%; border-collapse: collapse; margin-bottom: 32px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid #2a2d33; font-size: 0.9rem; }
+  th { color: #9aa0a6; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
+  .score { font-weight: 700; }
+  .alta { color: #4ade80; }
+  .baixa { color: #f87171; }
+  .lateral { color: #facc15; }
+  .card { background: #171a21; border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .obs { color: #b8bcc4; font-size: 0.85rem; margin-top: 6px; }
+</style>
+</head>
+<body>
+  <h1>Relatório Diário — Top {{ acoes|length }} Ações (B3)</h1>
+  <div class="data">Gerado em {{ data_geracao }}</div>
+
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Ticker</th>
+      <th>Score Final</th>
+      <th>Fundamentalista</th>
+      <th>Técnico</th>
+      <th>Tendência</th>
+      <th>Estratégia sugerida</th>
+    </tr>
+    {% for a in acoes %}
+    <tr>
+      <td>{{ loop.index }}</td>
+      <td><strong>{{ a.ticker }}</strong></td>
+      <td class="score">{{ a.score_final }}</td>
+      <td>{{ a.fundamental.score }}</td>
+      <td>{{ a.tecnico.score }}</td>
+      <td class="{{ a.tecnico.tendencia }}">{{ a.tecnico.tendencia|capitalize }}</td>
+      <td>{{ a.opcoes.estrategia }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% for a in acoes %}
+  <div class="card">
+    <h3>{{ a.ticker }} — score {{ a.score_final }}</h3>
+    <p><strong>Fundamentalista ({{ a.fundamental.score }}):</strong>
+      {{ a.fundamental.observacoes|join(' ') }}</p>
+    <p><strong>Técnico ({{ a.tecnico.score }} — {{ a.tecnico.tendencia }}):</strong>
+      {{ a.tecnico.observacoes|join(' ') }}</p>
+    <p><strong>Opções — {{ a.opcoes.estrategia }}:</strong> {{ a.opcoes.justificativa }}</p>
+  </div>
+  {% endfor %}
+</body>
+</html>
