@@ -3,6 +3,9 @@ Script disparado pelo GitHub Actions todos os dias:
 1. Roda o pipeline completo (gera o relatório HTML)
 2. Envia um resumo para o Telegram
 """
+import os
+import sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from main import rodar_pipeline
 from config.settings import UNIVERSO_ACOES, TELEGRAM_BOT_TOKEN
 from bot.telegram_bot import enviar_mensagem_sincrona
